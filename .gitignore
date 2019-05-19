@@ -5,8 +5,8 @@
 [Bb]uilds/
 [Ll]ogs/
 [Ll]og/
+*/x64/
 x64/
-APIs/
 Assets/AssetStoreTools*
 
 # Visual Studio cache directory

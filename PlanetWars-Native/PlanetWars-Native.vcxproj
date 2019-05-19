@@ -77,7 +77,7 @@ copy /Y "$(OutDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Assets\Plugins\$(Tar
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Program Files\Unity\Hub\Editor\2019.2.0a14\Editor\Data\PluginAPI;D:\Projects_Unity\PlanetWars\APIs\boost_1_67_0;D:\Projects_Unity\PlanetWars\APIs\Eigen;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files\Unity\Hub\Editor\2019.2.0a14\Editor\Data\PluginAPI;D:\Projects_Unity\PlanetWars\APIs\Eigen;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
