@@ -1,0 +1,18 @@
+﻿#pragma kernel Sphere
+
+uint _size;
+float3 _center;
+float _radius;
+
+RWTexture3D<half4> _result;
+
+[numthreads(8,8,8)]
+void Sphere (uint3 id : SV_DispatchThreadID)
+{
+    if (id.x >= _size || id.y >= _size || id.z >= _size)
+        return;
+    float3 delta = id - _center;
+    float l = length(delta);
+    float a = clamp((l - _radius) / 1.732050, -1.0, 1.0);
+    _result[id.xyz] = float4((delta / l) * a, a);
+}

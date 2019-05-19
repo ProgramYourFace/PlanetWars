@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PlanetWars-Native", "PlanetWars-Native\PlanetWars-Native.vcxproj", "{6EEB7E28-E8A4-4741-ADA6-ED3FB1904082}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6EEB7E28-E8A4-4741-ADA6-ED3FB1904082}.Debug|x64.ActiveCfg = Debug|x64
+		{6EEB7E28-E8A4-4741-ADA6-ED3FB1904082}.Debug|x64.Build.0 = Debug|x64
+		{6EEB7E28-E8A4-4741-ADA6-ED3FB1904082}.Release|x64.ActiveCfg = Release|x64
+		{6EEB7E28-E8A4-4741-ADA6-ED3FB1904082}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6DCBC44C-609D-45FA-B00F-97EF4D71074D}
+	EndGlobalSection
+EndGlobal

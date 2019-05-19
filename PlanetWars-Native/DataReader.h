@@ -1,0 +1,1 @@
+long ReadData(const char* filename, char*& data);

@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resource Files\Shaders">
+      <UniqueIdentifier>{e7c5a6ae-ba19-4525-9f01-50d355b5a57f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Pipeline">
+      <UniqueIdentifier>{c4b1f670-ffbd-4364-860e-82e29942b68d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Compute">
+      <UniqueIdentifier>{18d5c61c-2b0b-4765-b7b4-06befe58ab32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Compute\Brushes">
+      <UniqueIdentifier>{fd1a6d03-1470-4ddf-ba03-517ad7eb9fdf}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Plugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ComputeShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ComputeBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ComputeVolume.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Chunk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderTarget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChunkNTree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Plugin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ComputeShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ComputeBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ComputeVolume.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Chunk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderTarget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChunkNTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="ChunkPixelShader.hlsl">
+      <Filter>Resource Files\Shaders\Pipeline</Filter>
+    </FxCompile>
+    <FxCompile Include="ChunkVertexShader.hlsl">
+      <Filter>Resource Files\Shaders\Pipeline</Filter>
+    </FxCompile>
+    <FxCompile Include="ChunkMeshing.hlsl">
+      <Filter>Resource Files\Shaders\Compute</Filter>
+    </FxCompile>
+    <FxCompile Include="SphereForm.hlsl">
+      <Filter>Resource Files\Shaders\Compute\Brushes</Filter>
+    </FxCompile>
+    <FxCompile Include="PlanetForm.hlsl">
+      <Filter>Resource Files\Shaders\Compute\Brushes</Filter>
+    </FxCompile>
+    <FxCompile Include="ChunkMeshingSkirts.hlsl">
+      <Filter>Resource Files\Shaders\Compute</Filter>
+    </FxCompile>
+    <FxCompile Include="ImageForm.hlsl">
+      <Filter>Resource Files\Shaders\Compute\Brushes</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FormCompute.hlsli">
+      <Filter>Resource Files\Shaders\Compute\Brushes</Filter>
+    </None>
+    <None Include="ChunkMeshingIncludes.hlsli">
+      <Filter>Resource Files\Shaders\Compute</Filter>
+    </None>
+  </ItemGroup>
+</Project>
