@@ -1,11 +1,4 @@
-cbuffer formParams : register(b0)
-{
-    float4x4 _voxelMatrix;
-    uint3 _viewStart;
-    uint3 _viewRange;
-}
-
-RWTexture3D<half4> _voxels : register(u0);
+#include "FormParameters.hlsli"
 
 [numthreads(8, 8, 8)]
 void main(uint3 id : SV_DispatchThreadID)
@@ -15,5 +8,5 @@ void main(uint3 id : SV_DispatchThreadID)
     
     uint3 index = id + _viewStart;
     float3 pos = mul(_voxelMatrix, float4(index, 1.0)).xyz;
-    _voxels[index] = form(_voxels[index], pos);
+	_voxels[index] = form(_voxels[index], pos);//TODO: Clamp at crazy values so values do not compound into crazyness
 }

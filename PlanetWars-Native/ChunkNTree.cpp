@@ -45,8 +45,9 @@ void ChunkNTree::Traverse(RenderEngine* renderEngine,
 	bDim[0] = min(bDim[0], MAX_BRANCH_DIM);
 	bDim[1] = min(bDim[1], MAX_BRANCH_DIM);
 	bDim[2] = min(bDim[2], MAX_BRANCH_DIM);
+	bool hasBranches = bDim.x() > 1 || bDim.y() > 1 || bDim.z() > 1;
 	
-	if ((bDim.x() > 1 || bDim.y() > 1 || bDim.z() > 1) && ComputeError(focus, corner, size) > error_threshold)//Split
+	if (hasBranches && ComputeError(focus, corner, size) > error_threshold)//Split
 	{
 		PrimeBranches(bDim);
 
@@ -128,7 +129,7 @@ void ChunkNTree::Traverse(RenderEngine* renderEngine,
 				chunk = new Chunk(newRes, renderEngine->device);
 				renderEngine->LockContext();
 				form(chunk, newRes, corner, size);
-				renderEngine->ComputeMesh(chunk);
+				renderEngine->ComputeMesh(chunk, hasBranches);
 				renderEngine->UnlockContext();
 				requestUpdate = false;
 			}
@@ -444,7 +445,7 @@ inline void ChunkNTree::PrimeBranches(const Eigen::Vector3i & target)
 inline float ChunkNTree::ComputeError(const Eigen::Vector3i & focus, const Eigen::Vector3i& corner, const Eigen::Vector3i& size)
 {
 	float sqrDist = SqrToBox(focus, corner, size);
-	return size.squaredNorm() / max(sqrDist * sqrDist, 0.00001f);
+	return size.squaredNorm() / max(sqrDist, 0.00001f);
 }
 
 inline float ChunkNTree::SqrToBox(const Eigen::Vector3i & focus, const Eigen::Vector3i & corner, const Eigen::Vector3i & size)

@@ -1,3 +1,5 @@
+#include "FormParameters.hlsli"
+
 half4 form(half4 voxel, float3 position)
 {
     float l = length(position);

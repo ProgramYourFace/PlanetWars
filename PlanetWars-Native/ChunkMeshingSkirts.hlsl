@@ -66,12 +66,12 @@ static const uint2 edges[4] =
     uint2(3, 0),
 };
 
-static const uint edgeTable[16] =
+static const uint squareEdgeTable[16] =
 {
     0, 9, 3, 10, 6, 15, 5, 12, 12, 5, 15, 6, 12, 3, 9, 0
 };
 
-static const int triTable[16][13] =
+static const int squareTriTable[16][13] =
 {
     {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0 }, //0
     { 4,  7,  0, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1 }, //1
@@ -111,11 +111,6 @@ static const int triNrmTable[16][8] =
     {  4,  7, -1, -1, -1, -1, -1, -1 }, //15
 };*/
 
-float3 vInterp(float3 p1, float3 p2, float valp1, float valp2)
-{
-    return lerp(p1, p2, (_level - valp1) / (valp2 - valp1));
-}
-
 [numthreads(8, 8, 6)]
 void main(uint3 id : SV_DispatchThreadID)
 {
@@ -149,9 +144,10 @@ void main(uint3 id : SV_DispatchThreadID)
             squareFlag |= 1 << i;
     }
     
-    if (squareFlag == 0)
+    if (squareFlag == 0 || squareFlag == 15)
         return;
 
+	/*
     if(squareFlag == 15)
     {
         bool closed = true;
@@ -183,8 +179,9 @@ void main(uint3 id : SV_DispatchThreadID)
 
         if(closed)
             return;
-    }
-    uint edgeFlag = edgeTable[squareFlag];
+    }*/
+
+    uint edgeFlag = squareEdgeTable[squareFlag];
     float4 c1;
     float4 c2;
     [unroll(4)]
@@ -202,7 +199,7 @@ void main(uint3 id : SV_DispatchThreadID)
 
     Triangle t;
     t.nrm = faceNrm[id.z];
-    int triIndex[13] = triTable[squareFlag];
+    int triIndex[13] = squareTriTable[squareFlag];
     uint count = triIndex[12];
     int j = 0;
     for (i = 0; i < count; i++)

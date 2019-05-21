@@ -289,7 +289,7 @@ ComputeBuffer * RenderEngine::CreateConstantBuffer(void * data, const unsigned i
 	return new ComputeBuffer(BufferType::Constant, data, length, 1, device);
 }
 
-void RenderEngine::ComputeMesh(Chunk* chunk)
+void RenderEngine::ComputeMesh(Chunk* chunk, const bool& skirts)
 {
 	if (!chunk->volume)
 		return;
@@ -304,9 +304,12 @@ void RenderEngine::ComputeMesh(Chunk* chunk)
 	Chunk::maxTris->Bind(context, 0, true, 0);
 	chunk->volume->Bind(context, 0, false);
 	meshingCS->Dispatch(context, dispatchArgs.x(), dispatchArgs.y(), dispatchArgs.z());
-	int maxDispatchArgs = max(dispatchArgs.x(), dispatchArgs.y());
-	maxDispatchArgs = max(maxDispatchArgs, dispatchArgs.z());
-	skirtCS->Dispatch(context, maxDispatchArgs, maxDispatchArgs, 1);
+	if (skirts)
+	{
+		int maxDispatchArgs = max(dispatchArgs.x(), dispatchArgs.y());
+		maxDispatchArgs = max(maxDispatchArgs, dispatchArgs.z());
+		skirtCS->Dispatch(context, maxDispatchArgs, maxDispatchArgs, 1);
+	}
 
 	context->CopyStructureCount(countBuffer, 0, Chunk::maxTris->uav);
 
@@ -384,9 +387,9 @@ EXPORT void ApplyForm(
 	GetRenderEngine()->ApplyForm(computeShader, chunk, arguments, brushParameters);
 }
 
-EXPORT void ComputeMesh(Chunk* chunk)
+EXPORT void ComputeMesh(Chunk* chunk, bool skirts)
 {
-	GetRenderEngine()->ComputeMesh(chunk);
+	GetRenderEngine()->ComputeMesh(chunk, skirts);
 }
 
 EXPORT void SetSceneConstants(SceneShaderConstants scene)

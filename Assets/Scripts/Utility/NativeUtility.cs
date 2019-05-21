@@ -26,6 +26,8 @@ public struct BrushStrokeParameters
 	public Vector3Int viewStart;
 	[FieldOffset(80)]
 	public Vector3Int viewRange;
+    [FieldOffset(76)]
+    public Vector3 formBounds;
 };
 
 public enum NativeRenderTargetType
@@ -83,7 +85,7 @@ public static class NativeUtility
 		IntPtr arguments,
 		BrushStrokeParameters brushParameters);
 	[DllImport(NATIVE_PW_DLL)]
-	public static extern void ComputeMesh(IntPtr voxelChunk);
+	public static extern void ComputeMesh(IntPtr voxelChunk, bool skirts);
 
 	[DllImport(NATIVE_PW_DLL)]
 	public static extern void SetSceneConstants(NativeSceneShaderConstants scene);
@@ -114,6 +116,11 @@ public static class NativeUtility
 	{
 		return Resources.Load<TextAsset>("NativeShaders/" + shaderName).bytes;
 	}
+
+    public static Matrix4x4 GetNativeViewProjection(this Camera camera)
+    {
+        return GL.GetGPUProjectionMatrix(camera.projectionMatrix, true) * camera.worldToCameraMatrix;
+    }
 
 
 	[DllImport(NATIVE_PW_DLL)]

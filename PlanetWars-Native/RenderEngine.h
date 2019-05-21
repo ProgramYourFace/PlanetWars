@@ -34,6 +34,8 @@ _declspec(align(16)) struct BrushStrokeParameters
 	Eigen::Vector3i viewStart;
 	float pad;
 	Eigen::Vector3i viewRange;
+	float pad1;
+	Eigen::Vector3f formBounds;
 };
 
 _declspec(align(16)) struct SceneShaderConstants
@@ -129,7 +131,7 @@ public:
 	void UnlockContext();
 	ComputeBuffer* CreateConstantBuffer(void* data, const unsigned int& length);
 
-	void ComputeMesh(Chunk* chunk);
+	void ComputeMesh(Chunk* chunk, const bool& skirts);
 
 	~RenderEngine();
 public:

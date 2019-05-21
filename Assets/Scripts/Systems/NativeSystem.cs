@@ -30,10 +30,10 @@ public class NativeSystem : ComponentSystem
 	public static Action OnDeinitialize;
 
     private static JobHandle currentRenderJob;
-
-	protected override void OnStartRunning()
-	{
-		NativeUtility.Initialize(NativeLogger);
+    
+    protected override void OnStartRunning()
+    {
+        NativeUtility.Initialize(NativeLogger);
 		byte[] chunkMeshingCSBytes = NativeUtility.LoadShaderBytes("ChunkMeshing");
 		byte[] chunkMeshingSkirtsCSBytes = NativeUtility.LoadShaderBytes("ChunkMeshingSkirts");
 		byte[] chunkVSBytes = NativeUtility.LoadShaderBytes("ChunkVertexShader");
@@ -56,9 +56,25 @@ public class NativeSystem : ComponentSystem
 		OnInitialize = null;
 	}
 
-    protected override void OnDestroy()
+    protected override void OnStopRunning()
     {
-        Deinitialize();
+        if (nativeCamera)
+        {
+            if (depthInjector != null)
+                nativeCamera.RemoveCommandBuffer(CameraEvent.BeforeDepthTexture, depthInjector);
+            if (colorInjector != null)
+                nativeCamera.RemoveCommandBuffer(CameraEvent.BeforeForwardOpaque, colorInjector);
+        }
+        depthInjector?.Release();
+        colorInjector?.Release();
+        depthInjector = null;
+        colorInjector = null;
+
+        currentRenderJob.Complete();
+        NativeUtility.DeleteNativeResouce(ref renderTarget);
+        OnDeinitialize?.Invoke();
+        OnDeinitialize = null;
+        NativeUtility.Deinitialize();
     }
 
     protected override void OnUpdate()
@@ -104,7 +120,7 @@ public class NativeSystem : ComponentSystem
     public static NativeCameraShaderConstants GetCameraConstants(Camera camera)
     {
         NativeCameraShaderConstants camConsts = new NativeCameraShaderConstants();
-        camConsts.viewProjection = GL.GetGPUProjectionMatrix(camera.projectionMatrix, true) * camera.worldToCameraMatrix;
+        camConsts.viewProjection = camera.GetNativeViewProjection();
         return camConsts;
     }
 
@@ -112,27 +128,6 @@ public class NativeSystem : ComponentSystem
 	{
 		currentRenderJob = new NativeRenderJob() { renderPackage = NativeUtility.GetRenderPackage(renderTarget, GetCameraConstants(camera)) }.Schedule(currentRenderJob);
 	}
-
-    public void Deinitialize()
-    {
-        if (nativeCamera)
-        {
-            if (depthInjector != null)
-                nativeCamera.RemoveCommandBuffer(CameraEvent.BeforeDepthTexture, depthInjector);
-            if (colorInjector != null)
-                nativeCamera.RemoveCommandBuffer(CameraEvent.BeforeForwardOpaque, colorInjector);
-        }
-        depthInjector?.Release();
-        colorInjector?.Release();
-        depthInjector = null;
-        colorInjector = null;
-
-        currentRenderJob.Complete();
-        NativeUtility.DeleteNativeResouce(ref renderTarget);
-        OnDeinitialize?.Invoke();
-        OnDeinitialize = null;
-        NativeUtility.Deinitialize();
-    }
 
     void UpdateRenderTarget()
 	{

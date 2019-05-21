@@ -114,5 +114,8 @@
     <None Include="ChunkMeshingIncludes.hlsli">
       <Filter>Resource Files\Shaders\Compute</Filter>
     </None>
+    <None Include="FormParameters.hlsli">
+      <Filter>Resource Files\Shaders\Compute\Brushes</Filter>
+    </None>
   </ItemGroup>
 </Project>

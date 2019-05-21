@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using Unity.Entities;
 using UnityEngine;
 
@@ -6,10 +7,11 @@ using UnityEngine;
 public class PlanetSystem : ComponentSystem
 {
 	IntPtr planetFormCS;
-	//IntPtr imageFormCS;
 
-	//public static IntPtr testVolume;
-	/*
+    //IntPtr imageFormCS;
+
+    //public static IntPtr testVolume;
+    /*
 	void Initalize()
 	{
 		
@@ -66,25 +68,24 @@ public class PlanetSystem : ComponentSystem
 	}
 	*/
 
-	Entity CreateSphere(Vector3 position, Vector3 bounds, Quaternion rotation)
-	{
-		Entity entity = EntityManager.CreateEntity(typeof(VoxelBody), typeof(VoxelForm));
-		EntityManager.SetComponentData(entity,
-			new VoxelForm()
-			{
-				bounds = bounds,
-				center = position,
-				formArguments = IntPtr.Zero,
-				formComputeShader = planetFormCS
-			});
+    [StructLayout(LayoutKind.Sequential, Pack = 16)]
+    struct PlanetFormArgs
+    {
+        public float _radius;
+        public float _amplitude;
+        public float _frequency;
+    };
 
-		EntityManager.SetComponentData(entity, new VoxelBody(rotation));
-		return entity;
-	}
+    Entity CreatePlanet(Vector3 position, Vector3 bounds, Quaternion rotation, PlanetFormArgs args)
+	{
+        VoxelForm planetForm = new VoxelForm(position, bounds, rotation, planetFormCS, NativeUtility.CreateConstantBufferFromStruct(args));
+
+        return World.GetExistingSystem<VoxelSystem>().CreateVoxelBody(planetForm);
+    }
 
 	protected override void OnCreateManager()
 	{
-		NativeSystem.OnInitialize += NativeInitialize;
+        NativeSystem.OnInitialize += NativeInitialize;
 		NativeSystem.OnDeinitialize += NativeDeinitialize;
 	}
 
@@ -93,11 +94,12 @@ public class PlanetSystem : ComponentSystem
 		byte[] planetFormBC = NativeUtility.LoadShaderBytes("PlanetForm");
 		planetFormCS = NativeUtility.CreateComputeShader(planetFormBC, planetFormBC.Length);
 
-		//CreateSphere(Vector3.right * 256, new Vector3(512, 512, 512), Quaternion.Euler(25, 5, 25));
-		CreateSphere(Vector3.zero, new Vector3(512, 512, 512), Quaternion.Euler(10, 25, -25));
-		CreateSphere(Vector3.right * 512, new Vector3(512, 512, 512), Quaternion.Euler(25, 5, 25));
-		CreateSphere(Vector3.up * 512, new Vector3(512, 512, 512), Quaternion.Euler(10, 25, -25));
-		CreateSphere(Vector3.forward * 512, new Vector3(512, 512, 512), Quaternion.Euler(60, 32, 0));
+        CreatePlanet(Vector3.zero,
+            Vector3.one * 500.0f,
+            Quaternion.Euler(10, 25, -25),
+            new PlanetFormArgs() { _radius = 250.0f,
+                _amplitude = 100.0f,
+                _frequency = 50.0f });
 	}
 
 	void NativeDeinitialize()

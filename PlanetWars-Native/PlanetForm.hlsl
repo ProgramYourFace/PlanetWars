@@ -1,3 +1,12 @@
+#include "FormParameters.hlsli"
+
+cbuffer planetParameters : register(b1)
+{
+	float _radius;
+	float _amplitude;
+	float _frequency;
+}
+
 float hash(float n)
 {
     return frac(sin(n) * 43758.5453);
@@ -38,9 +47,9 @@ float fractal(float3 x)
 half4 form(half4 voxel, float3 position)
 {
     float l = length(position);
-    half s = (l - 0.75) * 10.0;
-    float n = fractal(position * 5.0f) * 2.5;
-    return half4(n / 2.0f, n / 2.0f, n / 2.0f, clamp(s + n, -1.0, 1.0));
+	half s = (l - _radius);
+    float n = fractal(position/ _frequency);
+    return half4(abs((position / l) * n), s + n * _amplitude);
 }
 
 #include "FormCompute.hlsli"
