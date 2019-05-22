@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
+using Unity.Burst;
 using UnityEngine;
 
 public struct VoxelLODUpdateJob : IJobForEachWithEntity<VoxelBody, VoxelForm>
@@ -12,7 +13,7 @@ public struct VoxelLODUpdateJob : IJobForEachWithEntity<VoxelBody, VoxelForm>
     [ReadOnly] public Vector3 observerPosition;
     [ReadOnly] public Matrix4x4 viewProjection;
 
-    //[ReadOnly] public ComponentDataFromEntity<VoxelForm> voxelForms;
+    [ReadOnly] public ComponentDataFromEntity<VoxelForm> voxelForms;
 
     public void Execute(Entity entity, int index, [ReadOnly] ref VoxelBody body,[ReadOnly] ref VoxelForm form)
 	{
@@ -24,8 +25,8 @@ public struct VoxelLODUpdateJob : IJobForEachWithEntity<VoxelBody, VoxelForm>
 		VoxelForm cForm = form;
         cForm.center = Vector3.zero;
         cForm.rotation = Quaternion.identity;
-        /*
-        List<VoxelForm> forms = new List<VoxelForm>();
+        
+        List<VoxelForm> forms = new List<VoxelForm>(1);
         
         while (true)
         {
@@ -34,15 +35,14 @@ public struct VoxelLODUpdateJob : IJobForEachWithEntity<VoxelBody, VoxelForm>
                 cForm = voxelForms[cForm.next];
             else
                 break;
-        }*/
+        }
 
         NativeUtility.FormChunk formChunk = (IntPtr chunk, Vector3Int resolution, Vector3Int corner, Vector3Int size) =>
 		{
 			Vector3 min = startCorner + corner.Scale(VoxelSystem.CELL_SCALE);
 			Vector3 scale = size.Scale(VoxelSystem.CELL_SCALE);
-            ApplyForm(chunk, cForm, resolution, min, scale);
-            //for (int i = 0; i < forms.Count; i++)
-            //     ApplyForm(chunk, forms[i], resolution, min, scale);
+            for (int i = 0; i < forms.Count; i++)
+                 ApplyForm(chunk, forms[i], resolution, min, scale);
         };
 
 		Matrix4x4 model = Matrix4x4.TRS(form.center + form.rotation * startCorner, form.rotation, Vector3.one * VoxelSystem.CELL_SCALE);
@@ -91,7 +91,7 @@ public struct VoxelLODUpdateJob : IJobForEachWithEntity<VoxelBody, VoxelForm>
 
 [UpdateInGroup(typeof(InitializationSystemGroup))]
 [UpdateBefore(typeof(NativeSystem))]
-public class VoxelSystem : ComponentSystem
+public class VoxelSystem : JobComponentSystem
 {
 	public static int LOD_UPDATE_SLOTS = 10;
 	public static float LOD_ERROR_THRESHOLD = 7.5f;
@@ -129,16 +129,21 @@ public class VoxelSystem : ComponentSystem
 		NativeUtility.InitializeMaxVertexBuffer(MAX_CELL_RESOLUTION);
 	}
     
-	protected override void OnUpdate()
-	{
+    protected override JobHandle OnUpdate(JobHandle inputDeps)
+    {
         if (GatherObserver())
-            (new VoxelLODUpdateJob() { observerPosition = observerPosition,
+        {
+            inputDeps = (new VoxelLODUpdateJob()
+            {
+                observerPosition = observerPosition,
                 errorThreshold = LOD_ERROR_THRESHOLD,
                 updateSlots = LOD_UPDATE_SLOTS,
                 viewProjection = observerMat,
-               // voxelForms = new ComponentDataFromEntity<VoxelForm>()
-            }).Schedule(this).Complete();
-	}
+                voxelForms = GetComponentDataFromEntity<VoxelForm>(true)
+            }).Schedule(this, inputDeps);
+        }
+        return inputDeps;
+    }
 	
 	void NativeDeinitialize()
 	{
