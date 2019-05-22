@@ -113,7 +113,7 @@ public class NativeSystem : ComponentSystem
 					Render(nativeCamera, renderTarget);
 			}
 			NativeUtility.Present();
-			JobHandle.ScheduleBatchedJobs();
+            JobHandle.ScheduleBatchedJobs();
 		}
 	}
 

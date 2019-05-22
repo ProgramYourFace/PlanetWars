@@ -3,14 +3,14 @@
 cbuffer sphereParameters : register(b1)
 {
 	float _radius;
-	float _addSign;
+	float _strength;
 }
 
 half4 form(half4 voxel, float3 position)
 {
-    float l = length(position);
-	half a = l - _radius;
-    return half4(voxel.rgb, _addSign * min(a, _addSign * voxel.a));
+	float l = length(position);
+	half a = min(l - _radius, 0.0f);
+	return half4(voxel.rgb, voxel.a + a * _strength);
 }
 
 #include "FormCompute.hlsli"

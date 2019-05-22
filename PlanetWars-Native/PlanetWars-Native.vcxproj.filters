@@ -94,9 +94,6 @@
     <FxCompile Include="ChunkMeshing.hlsl">
       <Filter>Resource Files\Shaders\Compute</Filter>
     </FxCompile>
-    <FxCompile Include="SphereForm.hlsl">
-      <Filter>Resource Files\Shaders\Compute\Brushes</Filter>
-    </FxCompile>
     <FxCompile Include="PlanetForm.hlsl">
       <Filter>Resource Files\Shaders\Compute\Brushes</Filter>
     </FxCompile>
@@ -104,6 +101,12 @@
       <Filter>Resource Files\Shaders\Compute</Filter>
     </FxCompile>
     <FxCompile Include="ImageForm.hlsl">
+      <Filter>Resource Files\Shaders\Compute\Brushes</Filter>
+    </FxCompile>
+    <FxCompile Include="SphereForm.hlsl">
+      <Filter>Resource Files\Shaders\Compute\Brushes</Filter>
+    </FxCompile>
+    <FxCompile Include="SphereAddForm.hlsl">
       <Filter>Resource Files\Shaders\Compute\Brushes</Filter>
     </FxCompile>
   </ItemGroup>

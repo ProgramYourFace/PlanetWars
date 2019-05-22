@@ -105,7 +105,7 @@ public class VoxelSystem : JobComponentSystem
 			body.Destroy();
 		}
 	}
-    
+
     Vector3 observerPosition;
     Matrix4x4 observerMat;
 

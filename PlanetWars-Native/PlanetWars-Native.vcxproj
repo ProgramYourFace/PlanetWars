@@ -87,13 +87,15 @@ copy /Y "$(OutDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Assets\Plugins\$(Tar
     <PostBuildEvent>
       <Command>RD /S /Q "$(SolutionDir)Assets\Shaders\Resources\NativeShaders\"
 start XCOPY /Y "$(OutDir)*.cso" "$(SolutionDir)Assets\Shaders\Resources\NativeShaders\*.bytes"
-copy /Y "$(OutDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Assets\Plugins\$(TargetName)$(TargetExt)"</Command>
+copy /Y "$(OutDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Assets\Plugins\$(TargetName)$(TargetExt)"
+"C:\Program Files\Unity\Hub\Editor\2019.2.0a14\Editor\Unity.exe" -projectPath "$(SolutionDir)"</Command>
     </PostBuildEvent>
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
     </FxCompile>
     <PreBuildEvent>
-      <Command>del /f /q $(OutDir)*.cso</Command>
+      <Command>taskkill /f /im:"Unity.exe" 2&gt;nul &amp;set errorlevel=0
+del /f /q $(OutDir)*.cso</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -144,6 +146,12 @@ copy /Y "$(OutDir)$(TargetName)$(TargetExt)" "$(SolutionDir)Assets\Plugins\$(Tar
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="SphereAddForm.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Compute</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="SphereForm.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Compute</ShaderType>
